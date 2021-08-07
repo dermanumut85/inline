@@ -57,7 +57,7 @@ pipeline {
 
      
         
-
+stage ("Push to Docker Hub") {
         node {
         withCredentials([sshUserPrivateKey(credentialsId: 'samazon-key.pem', usernameVariable: 'ec2-user')]) {
 
@@ -73,7 +73,7 @@ pipeline {
             sshCommand remote: remote, command: 'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
            
         
-        }
+        }}
     }
        
     }
