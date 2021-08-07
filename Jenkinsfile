@@ -19,6 +19,7 @@ pipeline {
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh'terraform apply -auto-approve'
+                sh'terrafrom test'
                 
             }
         }
