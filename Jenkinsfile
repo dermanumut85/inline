@@ -16,7 +16,7 @@ pipeline {
             steps{
                 echo "Creating Infrastructure"
                 sh 'cd /var/jenkins_home/workspace/${JOB_NAME}'
-                sh 'cd ./terraform-data'
+                sh 'cd ${pwd}/terraform-data'
                 sh 'pwd'
                 sh 'terraform init'
                 sh 'terraform apply -auto-approve'
