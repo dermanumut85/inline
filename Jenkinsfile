@@ -28,8 +28,8 @@ pipeline {
                 """ 
                dir('terraform-data'){
                    EC2_PUBLIC_IP = sh(
-                       script: "terraform output server-public-ip"
-                       returnStdout: true
+                       script: "terraform output server-public-ip",
+                       returntdout: true
                     ).trim()
                }
                }
