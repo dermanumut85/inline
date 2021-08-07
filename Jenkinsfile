@@ -6,12 +6,13 @@ pipeline {
         PASSWORD= credentials ("github_password")
         AWS_ACCESS_KEY_ID=credentials("aws_access_key")
         AWS_SECRET_ACCESS_KEY=credentials("aws_secret_key")
+        KEY=credentials("amazon-key.pem")
     }
 
      
     stages{
         
-        stage ("Create Infrustructure") {
+        stage ("Create Infrastructure") {
             steps{
                 echo "Creating Infrastructure"
                script{
@@ -20,7 +21,9 @@ pipeline {
                 sh 'terraform init'
                 sh 'terraform show'
                 
-                EC2_IP = sh (script:"terraform output server-public-ip"  returnStdout: true).trim()
+                sh "terraform output server-public-ip > ./ip.txt"  
+
+                echo "./ip.txt"
                }
                 
             }
@@ -55,12 +58,12 @@ pipeline {
         stage ("Deploy") {
             steps{
                 echo "Deploying to server"
-                sshagent(credentials:['amazon-key.pem']){
+                
 
-                    sh 'ssh -l ec2-user@$EC2_IP '
+                    sh 'ssh -i $KEY ec2-user@(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt) '
 
                     sh   'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
-                }
+                
             }
         }
 
