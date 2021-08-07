@@ -55,15 +55,16 @@ pipeline {
             }
         }
 
-     stage ("Deploying"){
+     
+        
+
+        node {
+        withCredentials([sshUserPrivateKey(credentialsId: 'samazon-key.pem', usernameVariable: 'ec2-user')]) {
+
         def remote = [:]
         remote.name = "node"
         remote.host = $(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )
         remote.allowAnyHosts = true
-
-        node {
-         withCredentials([sshUserPrivateKey(credentialsId: 'samazon-key.pem', usernameVariable: 'ec2-user')]) {
-       
 
         stage("SSH Steps Rocks!") {
             
@@ -71,11 +72,11 @@ pipeline {
             sshCommand remote: remote, command: 'sudo su'
             sshCommand remote: remote, command: 'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
            
+        
         }
     }
-        }
        
-        }
+    }
 
         
         
