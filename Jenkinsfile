@@ -19,6 +19,7 @@ pipeline {
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh 'terraform show'
+                EC2_IP= sh(script:"terraform output server-public-ip  returnsStdout: true).trim()
                 
                 
             }
@@ -53,9 +54,11 @@ pipeline {
         stage ("Deploy") {
             steps{
                 echo "Deploying to server"
-                sshagent(['amazon-key.pem']){
+                sshagent(credentials:['amazon-key.pem']){
 
-                    sh   'docker run --name my-nginx -dp 80:80 umutderman/my-web-ste:$BUILD_ID'
+                    sh 'ssh -l ec2-user@$EC2_IP '
+
+                    sh   'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
                 }
             }
         }
