@@ -57,7 +57,7 @@ pipeline {
 
         def remote = [:]
         remote.name = "node"
-        remote.host = "$(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )"
+        remote.host = $(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )
         remote.allowAnyHosts = true
 
         node {
