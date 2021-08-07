@@ -16,10 +16,10 @@ pipeline {
             steps{
                 echo "Creating Infrastructure"
                script{
-                sh 'cd /var/jenkins_home/workspace/$JOB_NAME/'
-                sh 'cd ./terraform-data'
+                sh 'cd /var/jenkins_home/workspace/$JOB_NAME/terraform-data'
+                sh 'pwd'
                 sh 'terraform init'
-                sh 'terraform show'
+                sh 'terraform apply -auto-approve'
                 
                 sh "terraform output server-public-ip > ./ip.txt"  
 
