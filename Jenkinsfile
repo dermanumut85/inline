@@ -26,7 +26,12 @@ pipeline {
                 cat ./ip.txt
                 
                 """ 
-              
+               dir('terraform-data'){
+                   EC2_PUBLIC_IP = sh(
+                       script: "terraform output server-public-ip"
+                       returnStdout: true
+                    ).trim()
+               }
                }
                
              }
@@ -55,28 +60,21 @@ pipeline {
             }
         }
 
-     
-        
-stage ("Push to Docker Hub") {
-        node {
-        withCredentials([sshUserPrivateKey(credentialsId: 'samazon-key.pem', usernameVariable: 'ec2-user')]) {
 
-        def remote = [:]
-        remote.name = "node"
-        remote.host = $(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )
-        remote.allowAnyHosts = true
 
-        stage("SSH Steps Rocks!") {
-            
-            
-            sshCommand remote: remote, command: 'sudo su'
-            sshCommand remote: remote, command: 'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
-           
-        
-        }}
-    }
-       
-    }
+        stage ("Deploy") {
+            steps{
+                echo 'Deploying to server'
+                echo "${EC2_PUBLIC_IP}"
+                sh '''
+                #!/bin/bash
+                
+                ssh -i $KEY ec2-user@${EC2_PUBLIC_IP} -y 
+                docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest
+                '''
+                
+            }
+        }
 
         
         
