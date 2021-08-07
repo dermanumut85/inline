@@ -61,10 +61,12 @@ pipeline {
             steps{
                 echo "Deploying to server"
                 
-                    sh 'export IP=$(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt )'
-                    sh 'ssh -i $KEY ec2-user@$IP -y '
+                sh """
+                #!/bin/bash
+                export IP=$(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt )
+                ssh -i $KEY ec2-user@$IP -y 
 
-                    sh   'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
+                docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest"""
                 
             }
         }
