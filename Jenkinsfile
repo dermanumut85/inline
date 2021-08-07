@@ -55,20 +55,25 @@ pipeline {
             }
         }
 
+        def remote = [:]
+        remote.name = "node"
+        remote.host = "$(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )"
+        remote.allowAnyHosts = true
 
+        node {
+         withCredentials([sshUserPrivateKey(credentialsId: 'samazon-key.pem', usernameVariable: 'ec2-user')]) {
+       
 
-        stage ("Deploy") {
-            steps{
-                echo 'Deploying to server'
-                
-                sh '''
-                #!/bin/bash
-                export IP=$(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt )
-                ssh -i $KEY ec2-user@$IP -y 
-                docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest
-                '''
-                
-            }
+        stage("SSH Steps Rocks!") {
+            
+            
+            sshCommand remote: remote, command: 'sudo su'
+            sshCommand remote: remote, command: 'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
+           
+        }
+    }
+
+       
         }
 
         
