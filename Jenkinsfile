@@ -12,10 +12,9 @@ pipeline {
      
     stages{
         
-        stage ("Create Infrastructure") {
+          stage ("Create Infrastructure") {
             steps{
                 echo "Creating Infrastructure"
-               steps{
                 sh '/var/jenkins_home/workspace/${JOB_NAME}'
                 sh 'cd ./terraform-data'
                 sh 'pwd'
@@ -26,9 +25,8 @@ pipeline {
 
                 sh "cat ./ip.txt"
                }
-                
-            }
-        }
+               
+             }
 
         stage ("build Image") {
             steps{
