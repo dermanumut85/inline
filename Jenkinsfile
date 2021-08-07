@@ -27,7 +27,7 @@ pipeline {
         stage ("build Image") {
             steps{
                 echo "Creating Image"
-                sh 'docker build . -t umutderman/my-web-ste:$BUILD_ID'
+                sh 'docker build . -t umutderman/my-web-ste:latest'
             }
         }
 
@@ -43,7 +43,7 @@ pipeline {
             steps{
                 echo "Login to Docker hub"
                 sh 'docker login -u umutderman -p ${PASSWORD}'
-                sh 'docker push umutderman/my-web-ste:$version'
+                sh 'docker push umutderman/my-web-ste:latest'
                 
             }
         }
