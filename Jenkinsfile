@@ -18,7 +18,7 @@ pipeline {
                 echo "test completed"
                 
             }
-
+        }
         stage ("Push to Docker Hub") {
             steps{
                 echo "Login to Docker hub"
@@ -27,6 +27,7 @@ pipeline {
                 
             }
         }
-    }   
+        
     }
+    
 }
