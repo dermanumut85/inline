@@ -19,7 +19,8 @@ pipeline {
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh 'terraform show'
-                EC2_IP= sh'(script:"terraform output server-public-ip  returnsStdout: true).trim()'
+                
+                EC2_IP = sh (script:"terraform output server-public-ip"  returnsStdout: true).trim()
                 
                 
             }
