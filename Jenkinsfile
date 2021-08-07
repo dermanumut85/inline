@@ -23,7 +23,7 @@ pipeline {
                 
                 sh "terraform output server-public-ip > ./ip.txt"  
 
-                echo "./ip.txt"
+                sh "cat ./ip.txt"
                }
                 
             }
@@ -59,8 +59,8 @@ pipeline {
             steps{
                 echo "Deploying to server"
                 
-
-                    sh 'ssh -i $KEY ec2-user@(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt) '
+                    sh 'export IP=$(cat /var/jenkins_home/workspace/$JOB_NAME/ip.txt )'
+                    sh 'ssh -i $KEY ec2-user@$IP -y '
 
                     sh   'docker run --name my-nginx -dp 90:80 umutderman/my-web-ste:latest'
                 
