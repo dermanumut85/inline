@@ -14,8 +14,8 @@ pipeline {
         stage ("Create Infrustructure") {
             steps{
                 echo "Creating Infrastructure"
-                sh 'export TF_VAR_access_key=$ACCESS_KEY'
-                sh 'export TF_VAR_secret_key=$SECRET_KEY'
+                sh 'export TF_VAR_AWS_ACCESS_KEY_ID=$ACCESS_KEY'
+                sh 'export TF_VAR_AWS_SECRET_ACCESS_KEY=$SECRET_KEY'
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh'terraform apply -auto-approve'
@@ -42,7 +42,7 @@ pipeline {
         stage ("Push to Docker Hub") {
             steps{
                 echo "Login to Docker hub"
-                sh 'docker login -u umutderman -p $PASSWORD'
+                sh 'docker login -u umutderman -p ${PASSWORD}'
                 sh 'docker push umutderman/my-web-ste:$version'
                 
             }
