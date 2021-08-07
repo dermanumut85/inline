@@ -14,8 +14,8 @@ pipeline {
         stage ("Create Infrustructure") {
             steps{
                 echo "Creating Infrastructure"
-                sh 'export TF_VAR_AWS_ACCESS_KEY_ID=$ACCESS_KEY'
-                sh 'export TF_VAR_AWS_SECRET_ACCESS_KEY=$SECRET_KEY'
+               
+                sh 'cd /var/jenkins_home/workspace/$JOB_NAME/$BUILD_NUMBER'
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh'terraform apply -auto-approve'
