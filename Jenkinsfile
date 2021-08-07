@@ -16,7 +16,7 @@ pipeline {
                 echo "Creating Infrastructure"
                 sh 'export TF_VAR_access_key=$ACCESS_KEY'
                 sh 'export TF_VAR_secret_key=$SECRET_KEY'
-                sh 'cd ./terraform data'
+                sh 'cd ./terraform_data'
                 sh 'terraform init'
                 sh'terraform apply -auto-approve'
                 
