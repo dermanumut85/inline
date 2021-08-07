@@ -21,7 +21,7 @@ pipeline {
                 cd /var/jenkins_home/workspace/${JOB_NAME}/terraform-data
                 pwd
                 terraform init
-                terraform appy -auto-approve
+                terraform apply -auto-approve
                 terraform output server-public-ip > ./ip.txt  
                 cat ./ip.txt
                 
