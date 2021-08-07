@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        version = '3'
+        version = '4'
+        PASSWORD= credentials ("github_password")
     }
 
     stages{
@@ -22,7 +23,7 @@ pipeline {
         stage ("Push to Docker Hub") {
             steps{
                 echo "Login to Docker hub"
-                sh 'docker login -u umutderman -p 3552397Oo.,'
+                sh 'docker login -u umutderman -p $PASSWORD'
                 sh 'docker push umutderman/my-web-ste:$version'
                 
             }
