@@ -15,15 +15,18 @@ pipeline {
           stage ("Create Infrastructure") {
             steps{
                 echo "Creating Infrastructure"
-                sh 'cd /var/jenkins_home/workspace/${JOB_NAME}'
-                sh 'cd ${pwd}/terraform-data'
-                sh 'pwd'
-                sh 'terraform init'
-                sh 'terraform apply -auto-approve'
-                
-                sh "terraform output server-public-ip > ./ip.txt"  
 
-                sh "cat ./ip.txt"
+                sh """ 
+                #!/bin/bash
+                cd /var/jenkins_home/workspace/${JOB_NAME}/terraform-data
+                pwd
+                terraform init
+                terraform appy -auto-approve
+                terraform output server-public-ip > ./ip.txt  
+                cat ./ip.txt
+                
+                """ 
+              
                }
                
              }
