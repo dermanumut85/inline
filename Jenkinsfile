@@ -8,7 +8,10 @@ pipeline {
         SECRET_KEY=credentials("aws_secret_key")
     }
 
-     stage ("Create Infrustructure") {
+     
+    stages{
+        
+        stage ("Create Infrustructure") {
             steps{
                 echo "Creating Infrastructure"
                 sh 'export TF_VAR_access_key=$ACCESS_KEY'
@@ -19,13 +22,15 @@ pipeline {
                 
             }
         }
-    stages{
+
         stage ("build Image") {
             steps{
                 echo "Creating Image"
                 sh 'docker build . -t umutderman/my-web-ste:$version'
             }
         }
+
+
 
         stage ("test") {
             steps{
