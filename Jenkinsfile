@@ -55,6 +55,7 @@ pipeline {
             }
         }
 
+     stage ("Deploying"){
         def remote = [:]
         remote.name = "node"
         remote.host = $(cat /var/jenkins_home/workspace/$JOB_NAME/terraform-data/ip.txt )
@@ -72,7 +73,7 @@ pipeline {
            
         }
     }
-
+        }
        
         }
 
