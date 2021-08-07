@@ -15,7 +15,7 @@ pipeline {
           stage ("Create Infrastructure") {
             steps{
                 echo "Creating Infrastructure"
-                sh '/var/jenkins_home/workspace/${JOB_NAME}'
+                sh 'cd /var/jenkins_home/workspace/${JOB_NAME}'
                 sh 'cd ./terraform-data'
                 sh 'pwd'
                 sh 'terraform init'
