@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        version = '4'
+        
         PASSWORD= credentials ("github_password")
-        ACCESS_KEY=credentials("aws_access_key")
-        SECRET_KEY=credentials("aws_secret_key")
+        AWS_ACCESS_KEY_ID=credentials("aws_access_key")
+        AWS_SECRET_ACCESS_KEY=credentials("aws_secret_key")
     }
 
      
@@ -15,11 +15,11 @@ pipeline {
             steps{
                 echo "Creating Infrastructure"
                
-                sh 'cd /var/jenkins_home/workspace/$JOB_NAME/$BUILD_NUMBER'
+                sh 'cd /var/jenkins_home/workspace/$JOB_NAME/'
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
-                sh'terraform apply -auto-approve'
-                sh'terrafrom test'
+                sh 'terraform show'
+                
                 
             }
         }
@@ -27,7 +27,7 @@ pipeline {
         stage ("build Image") {
             steps{
                 echo "Creating Image"
-                sh 'docker build . -t umutderman/my-web-ste:$version'
+                sh 'docker build . -t umutderman/my-web-ste:$BUILD_ID'
             }
         }
 
@@ -45,6 +45,18 @@ pipeline {
                 sh 'docker login -u umutderman -p ${PASSWORD}'
                 sh 'docker push umutderman/my-web-ste:$version'
                 
+            }
+        }
+
+
+
+        stage ("Deploy") {
+            steps{
+                echo "Deploying to server"
+                sshagent(['amazon-key.pem']){
+
+                    sh   'docker run --name my-nginx -dp 80:80 umutderman/my-web-ste:$BUILD_ID'
+                }
             }
         }
 
