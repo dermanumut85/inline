@@ -14,14 +14,14 @@ pipeline {
         stage ("Create Infrustructure") {
             steps{
                 echo "Creating Infrastructure"
-               
+               script{
                 sh 'cd /var/jenkins_home/workspace/$JOB_NAME/'
                 sh 'cd ./terraform-data'
                 sh 'terraform init'
                 sh 'terraform show'
                 
                 EC2_IP = sh (script:"terraform output server-public-ip"  returnStdout: true).trim()
-                
+               }
                 
             }
         }
