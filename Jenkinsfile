@@ -23,7 +23,8 @@ pipeline {
                 terraform init
                 terraform apply -auto-approve
                 terraform output server-public-ip > ./ip.txt
-                x=${(sed s/\"//g ip.txt)}
+                sed s/\"//g ip.txt >ec2-ip
+                x=${cat ec2-ip}
                 echo $x
                 """ 
                 }
