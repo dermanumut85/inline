@@ -22,7 +22,7 @@ pipeline {
                 pwd
                 terraform init
                 terraform apply -auto-approve
-                EC2_PUBLIC= ${terraform output server-public-ip}
+                EC2_PUBLIC= ${terraform output "server-public-ip"}
                 IP=${sed "s/^\(\"\)\(.*\)\1\$/\2/g" <<<"$(EC2_PUBLIC)"}
                 echo $IP
                 """ 
