@@ -25,7 +25,7 @@ pipeline {
                 terraform output server-public-ip > ./ip.txt
                 sed s/\"//g ip.txt >ec2-ip
                 x=${cat ec2-ip}
-                echo $x
+                echo ${x}
                 """ 
                 }
             }
