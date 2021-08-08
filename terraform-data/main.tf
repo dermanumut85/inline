@@ -97,7 +97,7 @@ connection {
 provisioner "remote-exec" {
   inline = [
     "sudo yum update -y","sudo yum install docker -y","sudo systemctl start docker","sudo chmod o+x /usr/bin/docker ",
-    "sudo systemctl docker run -dp 80:80 umutderman/my-web-ste:latest"
+    "sudo  docker run -dp 80:80 umutderman/my-web-ste:latest"
   ]
 }
 
