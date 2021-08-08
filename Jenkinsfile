@@ -18,7 +18,7 @@ pipeline {
 
                 sh """ 
                 #!/bin/bash
-                cd /var/jenkins_home/workspace/${JOB_NAME}/terraform-data
+                cd /var/jenkins_home/workspace/$(JOB_NAME)/terraform-data
                 pwd
                 terraform init
                 terraform apply -auto-approve
