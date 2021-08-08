@@ -23,7 +23,7 @@ pipeline {
                 terraform init
                 terraform apply -auto-approve
                 terraform output server-public-ip > ./ip.txt
-                x=$(sed "s/^\(\"\)\(.*\)\1\$/\2/g" ip.txt) 
+                x=${sed "s/^\(\"\)\(.*\)\1\$/\2/g" ip.txt} 
                 echo $x
                 """ 
                 }
