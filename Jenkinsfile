@@ -22,16 +22,12 @@ pipeline {
                 pwd
                 terraform init
                 terraform apply -auto-approve
-                terraform output server-public-ip > ./ip.txt  
-                cat ./ip.txt
+                EC2_PUBLIC= $(terraform output server-public-ip)
+                EC2_PUBLIC=$(sed "s/^\(\"\)\(.*\)\1\$/\2/g" <<<"$EC2_PUBLIC")
                 
                 """ 
-               dir('terraform-data'){
-                   EC2_PUBLIC_IP = sh(
-                       script: "terraform output server-public-ip",
-                       returntdout: true
-                    ).trim()
-               }
+
+             
                }
                
              }
